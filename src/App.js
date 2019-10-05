@@ -18,6 +18,30 @@ class App extends Component {
 
     }
 
+    clearList = () => {
+        (async () => {
+            const { value: password } = await Swal.fire({
+                title: 'Enter the password',
+                input: 'password',
+                inputAttributes: {
+                    maxlength: 10,
+                    autocapitalize: 'off',
+                    autocorrect: 'off'
+                }
+            })
+
+            if (password === "lakers23") {
+                this.setState({list: []});
+                let temp = [];
+                localStorage.setItem('queue', JSON.stringify(temp));
+            } else {
+                Swal.fire({
+                    title: "Incorrect Password"
+                })
+            }
+        })();
+    }
+
   removeCustomer = (id) => {
 
     (async () => {
@@ -30,13 +54,8 @@ class App extends Component {
           autocorrect: 'off'
         }
       })
-      
-      if (password === "") {
-        // let queue = document.getElementById('queue');
-        // let temp = document.getElementById(id);
 
-        // queue.removeChild(temp.parentNode);
-
+      if (password === "lakers23") {
         id = parseInt(id, 10);
         list = this.state.list;
         list = list.filter(function(obj){
@@ -45,7 +64,7 @@ class App extends Component {
 
         this.setState({list: list});
 
-          localStorage.setItem('queue', JSON.stringify(list));
+        localStorage.setItem('queue', JSON.stringify(list));
 
       } else {
         Swal.fire({
@@ -106,19 +125,23 @@ class App extends Component {
                     <div className='grid-2'>
                         <div id='queue'>
                             <div className ='grid-queue'>
-                                <span className='sub-title'>Customer</span>
-                                <span className='sub-title'>Barber</span>
-                                <span></span>
+                                <div className={"sub-title-container"}>
+                                    <span className='sub-title'>Customer</span>
+                                </div>
+                                <div className={"sub-title-container"}>
+                                    <span className='sub-title'>Barber</span>
+                                </div>
+                                <span className={'clear-button'} onClick={() => this.clearList()}>Clear All</span>
                             </div>
-                                {(this.state.list).map((arr) => {
-                                    return(
-                                        <div className ='grid-queue'>
-                                            {arr.barber ? <span className='queue-element barber-wait'>{arr.name}</span> : <span className='queue-element barber-none'>{arr.name}</span>}
-                                            {arr.barber ? <span className='queue-element barber-wait'>{arr.barber}</span> : <span className='queue-element barber-none'>{arr.barber}</span>}
-                                            <span id={arr.id} className={'x-button'} onClick={() => this.removeCustomer(arr.id)}>X</span>
-                                        </div>
-                                    );
-                                })}
+                            {(this.state.list).map((arr) => {
+                                return(
+                                    <div className ='grid-queue'>
+                                        {arr.barber ? <span className='queue-element barber-wait'>{arr.name}</span> : <span className='queue-element barber-none'>{arr.name}</span>}
+                                        {arr.barber ? <span className='queue-element barber-wait'>{arr.barber}</span> : <span className='queue-element barber-none'>{arr.barber}</span>}
+                                        <span id={arr.id} className={'x-button'} onClick={() => this.removeCustomer(arr.id)}>X</span>
+                                    </div>
+                                );
+                            })}
                         </div>
                         <div className = 'customer-input'>
                             <div className='request'>Please enter your fullname</div>

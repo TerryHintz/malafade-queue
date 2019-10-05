@@ -73,6 +73,18 @@
   background-color: gainsboro;
 }
 
+.clear-button {
+  font-size: 15px;
+  height: 13px;
+  border: 1px solid black;
+  padding: 15px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  background-color: gainsboro;
+}
+
 .input-field{
   padding-top: 10px;
   padding-bottom: 10px;
@@ -103,4 +115,16 @@
 .button-confirm-a:hover {
   background-color: lightgray;
   cursor: pointer;
+}
+
+.sub-title-container {
+  padding: 10px;
+}
+
+.clear-contain {
+  text-align: center;
+}
+
+.clear-span {
+
 }
