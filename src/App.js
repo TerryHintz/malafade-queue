@@ -8,6 +8,8 @@ if (id){
     id = parseInt(id, 10);
 }
 
+const PASS = 'lakers23';
+
 class App extends Component {
 	state = {
 		temp: true,
@@ -30,7 +32,7 @@ class App extends Component {
                 }
             })
 
-            if (password === "lakers23") {
+            if (password === PASS) {
                 this.setState({list: []});
                 let temp = [];
                 localStorage.setItem('queue', JSON.stringify(temp));
@@ -42,36 +44,35 @@ class App extends Component {
         })();
     }
 
-  removeCustomer = (id) => {
+    removeCustomer = (id) => {
+        (async () => {
+          const { value: password } = await Swal.fire({
+            title: 'Enter the password',
+            input: 'password',
+            inputAttributes: {
+              maxlength: 10,
+              autocapitalize: 'off',
+              autocorrect: 'off'
+            }
+          })
 
-    (async () => {
-      const { value: password } = await Swal.fire({
-        title: 'Enter the password',
-        input: 'password',
-        inputAttributes: {
-          maxlength: 10,
-          autocapitalize: 'off',
-          autocorrect: 'off'
-        }
-      })
+          if (password === PASS) {
+            id = parseInt(id, 10);
+            list = this.state.list;
+            list = list.filter(function(obj){
+                return obj.id !== id;
+              });
 
-      if (password === "lakers23") {
-        id = parseInt(id, 10);
-        list = this.state.list;
-        list = list.filter(function(obj){
-            return obj.id !== id;
-          });
+            this.setState({list: list});
 
-        this.setState({list: list});
+            localStorage.setItem('queue', JSON.stringify(list));
 
-        localStorage.setItem('queue', JSON.stringify(list));
-
-      } else {
-        Swal.fire({
-          title: "Incorrect Password"
-        })
-      }
-    })();
+          } else {
+            Swal.fire({
+              title: "Incorrect Password"
+            })
+          }
+        })();
   }
 
 	handleConfirm = () => {
