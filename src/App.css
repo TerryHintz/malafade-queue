@@ -1,3 +1,15 @@
+.queue-root {
+  min-height: 100vh;
+}
+
+.queue-demo-pass {
+  position: absolute;
+  bottom: 40px;
+  text-align: center;
+  width: 100%;
+  font-size: 25px;
+}
+
 .header {
   text-align: center;
   font-family: 'Montserrat', sans-serif;
@@ -5,14 +17,15 @@
 
 .sub-title {
   font-family: 'Montserrat', sans-serif;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 20px;
   padding-bottom: 10px;
 }
 
 .logo {
   display: block;
-  margin: 10px auto;
+  padding: 10px;
+  margin: auto;
 }
 
 .grid-2 {
@@ -52,7 +65,7 @@
 
 .request {
   font-family: 'Montserrat', sans-serif;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 20px;
 }
 
@@ -125,6 +138,20 @@
   text-align: center;
 }
 
-.clear-span {
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  bottom: -100px;
+}
 
+.my-name {
+  margin: 0 10px;
+  font-size: 20px;
+  color: gray;
+}
+
+.github-icon {
+  height: 25px;
 }

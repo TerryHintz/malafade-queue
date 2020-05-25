@@ -2,22 +2,24 @@ import React, { Component } from 'react';
 import './App.css';
 import Swal from 'sweetalert2';
 
-let list = [];
-let id = localStorage.getItem('id') || 0;
-if (id){
-    id = parseInt(id, 10);
-}
-
-const PASS = 'lakers23';
+const PASS = 'password';
 
 class App extends Component {
 	state = {
-		temp: true,
-        list: JSON.parse(localStorage.getItem('queue')) || [],
+        list: [],
+        id: 0,
 	};
 
 	componentDidMount() {
-
+        let list = JSON.parse(localStorage.getItem('queue'));
+        let id = localStorage.getItem('id') || 0;
+        if (id){
+            id = parseInt(id, 10);
+            this.setState({id});
+        }
+        if(list){
+            this.setState({list});
+        }
     }
 
     clearList = () => {
@@ -58,12 +60,12 @@ class App extends Component {
 
           if (password === PASS) {
             id = parseInt(id, 10);
-            list = this.state.list;
+            let list = this.state.list;
             list = list.filter(function(obj){
                 return obj.id !== id;
               });
 
-            this.setState({list: list});
+            this.setState({list});
 
             localStorage.setItem('queue', JSON.stringify(list));
 
@@ -73,49 +75,47 @@ class App extends Component {
             })
           }
         })();
-  }
-
-	handleConfirm = () => {
-    let customer_name = document.getElementById('input_name').value;
-    let barber_name = document.getElementById('input_barber').value;
-
-    if (customer_name.length === 0){
-      Swal.fire({
-        title: "Your name must not be empty!",
-        timer: 5000
-      })
-      return;
     }
 
-    document.getElementById('input_barber').value = '';
-    document.getElementById('input_name').value = '';
+	handleConfirm = () => {
+        let customer_name = document.getElementById('input_name').value;
+        let barber_name = document.getElementById('input_barber').value;
 
-    list = this.state.list;
+        if (customer_name.length === 0){
+            Swal.fire({
+                title: "Your name must not be empty!",
+                timer: 5000
+            })
+            return;
+        }
 
-    list.push({
-        id: id,
-        name: customer_name,
-        barber: barber_name,
-    });
+        document.getElementById('input_barber').value = '';
+        document.getElementById('input_name').value = '';
 
-    id++;
+        let list = this.state.list;
 
-    localStorage.setItem('id', id);
+        list.push({
+            id: this.state.id,
+            name: customer_name,
+            barber: barber_name,
+        });
+        localStorage.setItem('id', this.state.id + 1);
+        this.setState({id: this.state.id + 1});
 
-    localStorage.setItem('queue', JSON.stringify(list));
+        localStorage.setItem('queue', JSON.stringify(list));
 
-    this.setState({list: list});
+        this.setState({list});
 
-    Swal.fire({
-      title: "Thank you, you have been added to the waitlist, please wait for us to call your name.",
-      timer: 5000,
-      showConfirmButton: false
-    })
-}
+        Swal.fire({
+            title: "Thank you, you have been added to the waitlist, please wait for us to call your name.",
+            timer: 5000,
+            showConfirmButton: false
+        })
+    }
 
 	render() {
         return (
-            <div>
+            <div className='queue-root'>
 			    <div>
                     <link rel="stylesheet" type="text/css" href="css/main.css"></link>
                     <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet"></link>
@@ -136,7 +136,7 @@ class App extends Component {
                             </div>
                             {(this.state.list).map((arr) => {
                                 return(
-                                    <div className ='grid-queue'>
+                                    <div key={arr.id} className ='grid-queue'>
                                         {arr.barber ? <span className='queue-element barber-wait'>{arr.name}</span> : <span className='queue-element barber-none'>{arr.name}</span>}
                                         {arr.barber ? <span className='queue-element barber-wait'>{arr.barber}</span> : <span className='queue-element barber-none'>{arr.barber}</span>}
                                         <span id={arr.id} className={'x-button'} onClick={() => this.removeCustomer(arr.id)}>X</span>
@@ -173,6 +173,11 @@ class App extends Component {
                             </div>
                         </div>
                     </div>
+                </div>
+                <div className='footer'>
+                    <img alt='github' className='github-icon' src={require('./GitHub-Mark-32px.png')}></img>
+                    <a className='my-name' href='https://github.com/TerryHintz'>{"Leo Zhang"}</a>
+                    <img alt='github' className='github-icon' src={require('./GitHub-Mark-32px.png')}></img>
                 </div>
             </div>
 		);
